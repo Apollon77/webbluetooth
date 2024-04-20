@@ -30,8 +30,8 @@
     "lint": "eslint . --ext .ts",
     "test": "mocha --timeout 10000 test/*.test.js",
     "docs": "typedoc",
-    "prebuild": "prebuildify --backend cmake-js --napi --strip",
-    "prebuild-cross": "prebuildify-cross --backend cmake-js --napi --strip",
+    "prebuild": "prebuildify --backend cmake-js --napi --target 14.0.0 --force --strip --verbose",
+    "prebuild-cross": "prebuildify-cross --backend cmake-js --napi --target 14.0.0 --force --strip --verbose",
     "prepublishOnly": "prebuildify-ci download",
     "prebuild-download": "prebuildify-ci download"
   },
