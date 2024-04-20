@@ -57,11 +57,11 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libdbus-1-dev
           docker pull ghcr.io/prebuild/linux-arm64-lts
-          docker run ghcr.io/prebuild/linux-arm64-lts apt-get install libdbus-1-dev cmake
+          docker run ghcr.io/prebuild/linux-arm64-lts sudo apt-get install libdbus-1-dev cmake
           docker pull ghcr.io/prebuild/linux-armv7
-          docker run ghcr.io/prebuild/linux-armv7 apt-get install libdbus-1-dev cmake
+          docker run ghcr.io/prebuild/linux-armv7 sudo apt-get install libdbus-1-dev cmake
           docker pull ghcr.io/prebuild/linux-armv6
-          docker run ghcr.io/prebuild/linux-armv6 apt-get install libdbus-1-dev cmake
+          docker run ghcr.io/prebuild/linux-armv6 sudo apt-get install libdbus-1-dev cmake
       - if: contains(matrix.os, 'macos')
         uses: jwlawson/actions-setup-cmake@v2.0
         with:
