@@ -20,8 +20,7 @@ jobs:
           - name: darwin
             os: macos-11
             node: x64
-            command: prebuild
-            args: --arch x64+arm64
+            command: prebuild --arch x64+arm64
           - name: win32-x86
             os: windows-2019
             node: x86
@@ -32,20 +31,16 @@ jobs:
             command: prebuild
           - name: linux-x64
             os: ubuntu-20.04
-            command: prebuild-cross
-            args: --tag-libc -i centos7-devtoolset7 -i alpine
+            command: prebuild-cross --tag-libc -i centos7-devtoolset7 -i alpine
           - name: linux-arm
             os: ubuntu-20.04
-            command: prebuild-cross
-            args: --tag-armv -i linux-arm64-lts -i linux-armv7 -i linux-armv6
+            command: prebuild-cross --tag-armv -i linux-arm64-lts -i linux-armv7 -i linux-armv6
           - name: android-arm
             os: ubuntu-20.04
-            command: prebuild-cross
-            args: --tag-armv -i android-arm64 -i android-armv7
+            command: prebuild-cross --tag-armv -i android-arm64 -i android-armv7
           - name: linux-x86
             os: ubuntu-20.04
-            command: prebuild-cross
-            args: -i linux-x86
+            command: prebuild-cross -i linux-x86
     name: Build ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
     steps:
@@ -60,7 +55,9 @@ jobs:
       - if: contains(matrix.os, 'ubuntu')
         run: |
           sudo apt-get update
-          sudo apt-get install -y libdbus-1-dev cmake
+          sudo apt-get install -y libdbus-1-dev
+          docker pull ghcr.io/prebuild/centos7-devtoolset7
+          docker run ghcr.io/prebuild/centos7-devtoolset7 "apt-get update && apt install libdbus-1-dev cmake"
       - if: contains(matrix.os, 'macos')
         uses: jwlawson/actions-setup-cmake@v2.0
         with:
@@ -68,7 +65,7 @@ jobs:
       - if: contains(matrix.os, 'windows')
         uses: microsoft/setup-msbuild@v2.0.0
       - run: yarn install --ignore-scripts
-      - run: yarn ${{ matrix.command }} -- ${{ matrix.args }}
+      - run: yarn ${{ matrix.command }}
       - run: tar -zcvf ${{ matrix.name }}.tar.gz -C prebuilds .
       - uses: actions/upload-artifact@v4
         with:
